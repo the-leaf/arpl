@@ -7,13 +7,14 @@ set -e
 # Sanity check
 loaderIsConfigured || die "Loader is not configured!"
 
-# Print text centralized, if variable ${COLUMNS} is defined
+# Print text centralized
 clear
+[ -z "${COLUMNS}" ] && COLUMNS=50
 TITLE="Welcome to Automated Redpill Loader v${ARPL_VERSION}"
-printf "\033[1;44m%*s\n" $COLUMNS ""
-printf "\033[1;44m%*s\033[A\n" $COLUMNS ""
-printf "\033[1;32m%*s\033[0m\n" $(((${#TITLE}+$COLUMNS)/2)) "${TITLE}"
-printf "\033[1;44m%*s\033[0m\n" $COLUMNS ""
+printf "\033[1;44m%*s\n" ${COLUMNS} ""
+printf "\033[1;44m%*s\033[A\n" ${COLUMNS} ""
+printf "\033[1;32m%*s\033[0m\n" $(((${#TITLE}+${COLUMNS})/2)) "${TITLE}"
+printf "\033[1;44m%*s\033[0m\n" ${COLUMNS} ""
 TITLE="BOOTING..."
 printf "\033[1;33m%*s\033[0m\n" $(((${#TITLE}+${COLUMNS})/2)) "${TITLE}"
 
@@ -88,7 +89,7 @@ fi
 # Validate netif_num
 NETIF_NUM=${CMDLINE["netif_num"]}
 MACS=0
-for N in `seq 1 4`; do
+for N in `seq 1 9`; do
   [ -n "${CMDLINE["mac${N}"]}" ] && MACS=$((${MACS}+1))
 done
 if [ ${NETIF_NUM} -ne ${MACS} ]; then
